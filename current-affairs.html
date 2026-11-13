@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>करेंट अफेयर्स क्विज़ अभ्यास - लक्ष्य पोर्टल</title>
+    <style>
+        :root {
+            --bg-color: #f4f7f6;
+            --container-bg: #ffffff;
+            --text-color: #333333;
+            --card-bg: #fafafa;
+            --border-color: #e0e0e0;
+            --primary-color: #2c3e50;
+            --accent-color: #3498db;
+            --hover-bg: #ebf5fb;
+            --shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #121212;
+            --container-bg: #1e1e1e;
+            --text-color: #f4f7f6;
+            --card-bg: #2d2d2d;
+            --border-color: #444444;
+            --primary-color: #f4f7f6;
+            --accent-color: #2980b9;
+            --hover-bg: #333333;
+            --shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            padding: 20px;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: var(--container-bg);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .logo-area h2 {
+            color: var(--accent-color);
+            font-size: 1.5rem;
+        }
+
+        .theme-btn, .back-btn {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            text-decoration: none;
+            transition: opacity 0.2s;
+            font-size: 0.9rem;
+        }
+
+        .theme-btn:hover, .back-btn:hover {
+            opacity: 0.9;
+        }
+
+        .hero-section {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .hero-section h1 {
+            font-size: 2.2rem;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .hero-section p {
+            color: #7f8c8d;
+            font-size: 1.05rem;
+        }
+
+        /* सेक्शन हेडिंग */
+        .section-title {
+            font-size: 1.3rem;
+            color: var(--primary-color);
+            margin: 25px 0 15px 0;
+            border-left: 4px solid var(--accent-color);
+            padding-left: 10px;
+        }
+
+        /* क्विज़ सेट ग्रिड */
+        .quiz-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .quiz-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+            cursor: pointer;
+        }
+
+        .quiz-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+            border-color: var(--accent-color);
+            background: var(--hover-bg);
+        }
+
+        .card-content h3 {
+            font-size: 1.15rem;
+            color: var(--accent-color);
+            margin-bottom: 8px;
+        }
+
+        .card-content p {
+            font-size: 0.88rem;
+            color: #7f8c8d;
+            margin-bottom: 15px;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid var(--border-color);
+            padding-top: 10px;
+        }
+
+        .badge {
+            background: rgba(52, 152, 219, 0.15);
+            color: var(--accent-color);
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+
+        .badge-new {
+            background: rgba(46, 204, 113, 0.15);
+            color: #27ae60;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+
+        .action-link {
+            text-decoration: none;
+            color: var(--accent-color);
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .action-link:hover {
+            text-decoration: underline;
+        }
+
+        .nav-footer {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 600px) {
+            .hero-section h1 {
+                font-size: 1.6rem;
+            }
+            .container {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body data-theme="light">
+
+<div class="container">
+    <header>
+        <div class="logo-area">
+            <h2>🌟 करेंट अफेयर्स पोर्टल</h2>
+        </div>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <a href="index.html" class="back-btn">🏠 होमपेज</a>
+            <button class="theme-btn" onclick="toggleTheme()">🌙 डार्क मोड</button>
+        </div>
+    </header>
+
+    <div class="hero-section">
+        <h1>उत्तर प्रदेश & राष्ट्रीय करेंट अफेयर्स</h1>
+        <p>सभी महत्वपूर्ण 808 प्रश्न और आगामी नए करेंट अफेयर्स सेट का चयन करें</p>
+    </div>
+
+    <!-- सेक्शन 1: नए और आगामी प्रश्न -->
+    <h2 class="section-title">✨ नए एवं आगामी प्रश्न (New Additions)</h2>
+    <div class="quiz-grid">
+        <div class="quiz-card" onclick="alert('नया सेट जल्द अपडेट किया जाएगा!')">
+            <div class="card-content">
+                <h3>करेंट अफेयर्स - नया सेट (Upcoming)</h3>
+                <p>हाल ही में जोड़े जाने वाले नए और महत्वपूर्ण समसामयिक प्रश्न।</p>
+            </div>
+            <div class="card-footer">
+                <span class="badge-new">जल्द आ रहा है</span>
+                <span class="action-link">शीघ्र खुल रहा है &rarr;</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- सेक्शन 2: पुराने 808 प्रश्न (सेट 1 से 18) -->
+    <h2 class="section-title">📚 स्पीड करेंट अफेयर्स (808 प्रश्न - सेट 1 से 18)</h2>
+    <div class="quiz-grid">
+
+        <!-- यदि आपकी पुरानी मास्टर फाइल 'quiz.html' है जिसमें सभी 808 प्रश्न हैं -->
+        <div class="quiz-card" onclick="location.href='quiz.html'">
+            <div class="card-content">
+                <h3>संपूर्ण 808 प्रश्न (मास्टर क्विज़)</h3>
+                <p>स्पीड करेंट अफेयर्स के सभी प्रश्न एक साथ अभ्यास करने के लिए।</p>
+            </div>
+            <div class="card-footer">
+                <span class="badge">All 808 MCQs</span>
+                <span class="action-link">प्रारंभ करें &rarr;</span>
+            </div>
+        </div>
+
+        <!-- भविष्य में अगर आप सेट-वाइज अलग फाइलें बनाते हैं (जैसे quiz-set1.html) -->
+        <div class="quiz-card" onclick="alert('आप चाहें तो इसे सेट-1 की अलग फाइल से जोड़ सकते हैं!')">
+            <div class="card-content">
+                <h3>करेंट अफेयर्स - सेट 1 (उदाहरण)</h3>
+                <p>महत्वपूर्ण प्रश्नों का पहला भाग। (आप अपनी फाइल का नाम बदल सकते हैं)</p>
+            </div>
+            <div class="card-footer">
+                <span class="badge">Set 1</span>
+                <span class="action-link">प्रैक्टिस करें &rarr;</span>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="nav-footer">
+        <a href="index.html" class="back-btn">&larr; मुख्य होमपेज पर वापस जाएं</a>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 अध्ययन पोर्टल | सभी अधिकार सुरक्षित</p>
+    </footer>
+</div>
+
+<script>
+    // डार्क मोड टॉगल करने का फंक्शन
+    function toggleTheme() {
+        const body = document.body;
+        const btn = document.querySelector('.theme-btn');
+        if (body.getAttribute('data-theme') === 'light') {
+            body.setAttribute('data-theme', 'dark');
+            btn.innerText = '☀️ लाइट मोड';
+        } else {
+            body.setAttribute('data-theme', 'light');
+            btn.innerText = '🌙 डार्क मोड';
+        }
+    }
+</script>
+
+</body>
+</html>
