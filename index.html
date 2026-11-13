@@ -183,7 +183,7 @@
             text-decoration: none;
             color: var(--accent-color);
             font-weight: bold;
-            font-size: 0.95srem;
+            font-size: 0.95rem;
         }
 
         .action-link:hover {
@@ -199,7 +199,6 @@
             font-size: 0.9rem;
         }
 
-        /* मोबाइल रेस्पॉन्सिव */
         @media (max-width: 600px) {
             .hero-section h1 {
                 font-size: 1.7rem;
@@ -227,20 +226,20 @@
 
     <!-- सर्च फिल्टर इनपुट -->
     <div class="search-box">
-        <input type="text" id="searchInput" placeholder="🔍 अपना विषय यहाँ खोजें (जैसे: इतिहास, करेंट अफेयर्स)..." onkeyup="filterSubjects()">
+        <input type="text" id="searchInput" placeholder="🔍 अपना विषय यहाँ खोजें (जैसे: इतिहास, करेंट अफेयर्स, मैप)..." onkeyup="filterSubjects()">
     </div>
 
     <!-- विषयों की सूची (Cards) -->
     <div class="subjects-grid" id="subjectsGrid">
 
-        <!-- 1. करेंट अफेयर्स  -->
+        <!-- 1. करेंट अफेयर्स -->
         <div class="subject-card" onclick="location.href='current-affairs.html'">
             <div class="card-content">
                 <h3>🌟 उत्तर प्रदेश & राष्ट्रीय करेंट अफेयर्स</h3>
-                <p>महत्वपूर्ण वस्तुनिष्ठ प्रश्न</p>
+                <p>महत्वपूर्ण वस्तुनिष्ठ प्रश्न एवं टेस्ट सीरीज</p>
             </div>
             <div class="card-footer">
-                <span class="badge">quiz</span>
+                <span class="badge">Quiz</span>
                 <span class="action-link">प्रैक्टिस करें &rarr;</span>
             </div>
         </div>
@@ -249,11 +248,11 @@
         <div class="subject-card" onclick="location.href='quiz1.html'">
             <div class="card-content">
                 <h3>🏛️ भारतीय इतिहास (History)</h3>
-                <p>प्राचीन, मध्यकालीन, आधुनिक भारत एवं भारतीय राष्ट्रीय आन्दोलन।</p>
+                <p>प्राचीन, मध्यकालीन, आधुनिक भारत एवं राष्ट्रीय आन्दोलन।</p>
             </div>
             <div class="card-footer">
                 <span class="badge">Subject & MCQ</span>
-                <span class="action-link">click here to open &rarr;</span>
+                <span class="action-link">ओपन करें &rarr;</span>
             </div>
         </div>
 
@@ -269,18 +268,17 @@
             </div>
         </div>
 
-         <!-- 4. Map Practice Card -->
-         <div class="subject-card" onclick="location.href='map-practice.html'">
-    <div class="card-content">
-        <h3>🗺️ मैप प्रैक्टिस पोर्टल (Map Practice)</h3>
-        <p>भारत और विश्व के मानचित्र पर क्लिक करके राज्य, राजधानियाँ, नेशनल पार्क और खनिज क्षेत्र याद करें</p>
-    </div>
-    <div class="card-footer">
-        <span class="badge">Interactive Map</span>
-        <span class="action-link">प्रैक्टिस शुरू करें &rarr;</span>
-          </div>
-      </div>
-
+        <!-- 4. मैप प्रैक्टिस पोर्टल -->
+        <div class="subject-card" onclick="location.href='map-practice.html'">
+            <div class="card-content">
+                <h3>🗺️ मैप प्रैक्टिस पोर्टल (Map Practice)</h3>
+                <p>भारत और विश्व के मानचित्र पर क्लिक करके राज्य, राजधानियाँ, नेशनल पार्क और खनिज क्षेत्र याद करें।</p>
+            </div>
+            <div class="card-footer">
+                <span class="badge">Interactive Map</span>
+                <span class="action-link">प्रैक्टिस शुरू करें &rarr;</span>
+            </div>
+        </div>
 
         <!-- 5. भारतीय राजव्यवस्था एवं अर्थव्यवस्था -->
         <div class="subject-card" onclick="alert('इस विषय का डेटा जल्द जोड़ा जाएगा!')">
