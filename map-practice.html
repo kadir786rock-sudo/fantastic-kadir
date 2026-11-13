@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>इंटरैक्टिव मैप प्रैक्टिस पोर्टल - लक्ष्य</title>
+    <style>
+        :root {
+            --bg-color: #f4f7f6;
+            --container-bg: #ffffff;
+            --text-color: #333333;
+            --card-bg: #fafafa;
+            --border-color: #e0e0e0;
+            --primary-color: #2c3e50;
+            --accent-color: #3498db;
+            --hover-bg: #ebf5fb;
+            --shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #121212;
+            --container-bg: #1e1e1e;
+            --text-color: #f4f7f6;
+            --card-bg: #2d2d2d;
+            --border-color: #444444;
+            --primary-color: #f4f7f6;
+            --accent-color: #2980b9;
+            --hover-bg: #333333;
+            --shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            padding: 20px;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: var(--container-bg);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .logo-area h2 {
+            color: var(--accent-color);
+            font-size: 1.5rem;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .theme-btn, .back-btn {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: opacity 0.2s;
+        }
+
+        .theme-btn:hover, .back-btn:hover {
+            opacity: 0.9;
+        }
+
+        .hero-section {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .hero-section h1 {
+            font-size: 2.2rem;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .hero-section p {
+            color: #7f8c8d;
+            font-size: 1.05rem;
+        }
+
+        /* सर्च बार */
+        .search-box {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .search-box input {
+            width: 100%;
+            max-width: 500px;
+            padding: 12px 20px;
+            font-size: 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 30px;
+            outline: none;
+            background: var(--card-bg);
+            color: var(--text-color);
+            transition: border-color 0.3s;
+        }
+
+        .search-box input:focus {
+            border-color: var(--accent-color);
+        }
+
+        /* मैप ग्रिड */
+        .map-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .map-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+            cursor: pointer;
+        }
+
+        .map-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+            border-color: var(--accent-color);
+            background: var(--hover-bg);
+        }
+
+        .card-content h3 {
+            font-size: 1.15rem;
+            color: var(--accent-color);
+            margin-bottom: 8px;
+        }
+
+        .card-content p {
+            font-size: 0.88rem;
+            color: #7f8c8d;
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid var(--border-color);
+            padding-top: 10px;
+        }
+
+        .badge {
+            background: rgba(52, 152, 219, 0.15);
+            color: var(--accent-color);
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+
+        .action-link {
+            text-decoration: none;
+            color: var(--accent-color);
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .action-link:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 600px) {
+            .hero-section h1 {
+                font-size: 1.6rem;
+            }
+            .container {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body data-theme="light">
+
+<div class="container">
+    <header>
+        <div class="logo-area">
+            <h2>🗺️ मैप प्रैक्टिस पोर्टल</h2>
+        </div>
+        <div class="btn-group">
+            <a href="index.html" class="back-btn">🏠 होमपेज</a>
+            <button class="theme-btn" onclick="toggleTheme()">🌙 डार्क मोड</button>
+        </div>
+    </header>
+
+    <div class="hero-section">
+        <h1>मानचित्र आधारित प्रैक्टिस क्षेत्र</h1>
+        <p>भारत और विश्व के भूगोल, पर्यावरण एवं इतिहास से जुड़े महत्वपूर्ण स्थलों का मानचित्र पर अभ्यास करें</p>
+    </div>
+
+    <!-- सर्च फिल्टर इनपुट -->
+    <div class="search-box">
+        <input type="text" id="searchInput" placeholder="🔍 मैप टॉपिक खोजें (जैसे: National Parks, Rivers)..." onkeyup="filterCards()">
+    </div>
+
+    <!-- मैप टॉपिक्स ग्रिड -->
+    <div class="map-grid" id="mapGrid">
+
+        <!-- 1. States -->
+        <div class="map-card" onclick="alert('यह प्रैक्टिस मॉड्यूल जल्द लाइव होगा!')">
+            <div class="card-content">
+                <h3>🇮🇳 भारतीय राज्य (States)</h3>
+                <p>भारत के सभी राज्यों की भौगोलिक स्थिति और सीमाओं का मानचित्र पर अभ्यास।</p>
+            </div>
+            <div class="card-footer">
+                <span class="badge">Map Quiz</span>
+                <span class="action-link">प्रैक्टिस करें &rarr;</span>
+            </div>
+        </div>
+
+        <!-- 2. States Details -->
+        <div class="map-card" onclick="alert('यह प्रैक्टिस मॉड्यूल जल्द लाइव होगा!')">
+            <div class="card-content">
+                <h3>🔍 राज्यों की विस्तृत जानकारी (States Details)</h3>
+                <p>प्रत्येक राज्य से जुड़ी विशेष भौगोलिक और प्रशासनिक जानकारी।</p>
+            </div>
+            <div class="card-footer">
+                <span class="badge">Advanced</span>
+                <span class="action-link">प्रैक्टिस करें &rarr;</span>
+            </div>
+        </div>
+
+        <!-- 3. Capitals -->
+        <div class="map-card" onclick="alert('यह प्रैक्टिस मॉड्यूल जल्द लाइव होगा!')">
+            <div class="card-content">
+                <h3>🏛️ राजधानियाँ (Capitals)</h3>
+                <p>भारत के राज्यों एवं केंद्र शासित प्रदेशों की राजधानियों की पहचान।</p>
+            </div>
+            <div class="card-footer">
+                <span class="badge">Map Quiz</span>
+                <span class="action-link">प्रैक्टिस करें &rarr;</span>
+            </div>
+        </div>
+
+        <!-- 4. Emblems -->
+        <div class="map-card" onclick="alert('यह प्रैक्टिस मॉड्यूल जल्द लाइव होगा!')">
+            <div class="card-content">
+                <h3>🦁 राजकीय प्रतीक (Emblems)</h3>
+                <p>विभिन्न राज्यों के राजकीय पशु, पक्षी, वृक्ष और फूलों की जानकारी।</p>
+            </div>
+            <div class="card-footer">
+                <span class="badge">General Studies</span>
+                <span class="action-link">प्रैक्टिस करें &rarr;</span>
+            </div>
+        </div>
+
+        <!-- 5. Districts -->
+        <div class="map-card" onclick="alert('यह प्रैक्टिस मॉड्यूल जल्द लाइव होगा!')">
+            <div class="card-content">
+                <h3>🗺️ जिले (Districts)</h3>
+                <p>महत्वपूर्ण जिलों की अवस्थिति का मानचित्र आधारित अभ्यास।</p>
+            </div>
+            <div class="card-footer">
+                <span class="badge">Detailed Map</span>
+                <span class="action-link">प्रैक्टिस करें &rarr;</span>
+            </div>
+        </div>
+
+        <!-- 6. Cities -->
+        <div class="map-card" onclick="alert('यह प्रैक्टिस मॉड्यूल जल्द लाइव होगा!')">
+            <div class="card-content">
+                <h3>🏙️ प्रमुख शहर (Cities)</h3>
+                <p>भारत के ऐतिहासिक, औद्योगिक एवं व्यावसायिक प्रमुख नगर।</p>
+            </div>
+            <div class="card-footer">
+                <span class="badge">Location Quiz</span>
+                <span class="action-link">प्रैक्टिस करें &rarr;</span>
+            </div>
+        </div>
+
+        <!-- 7. Rivers -->
+        <div class="map-card" onclick="alert('यह प्रैक्टिस मॉड्यूल जल्द लाइव होगा!')">
+            <div class="card-content">
+                <h3>🌊 नदियाँ (Rivers)</h3>
+                <p>भारत की प्रमुख नदियाँ, उनके उद्गम स्थल और प्रवाह मार्ग।</p>
+            </div>
+            <div class="card-footer">
+                <span class="badge">Drainage System</span>
+                <span class="action-link">प्रैक्टिस करें &rarr;</span>
+            </div>
+        </div>
+
+        <!-- 8. Dams -->
+        <div class="map-card" onclick="alert('यह प्रैक्टिस मॉड्यूल जल्द लाइव होगा!')">
+            <div class="card-content">
+                <h3>🌊 प्रमुख बांध (Dams)</h3>
+                <p>नदियों पर बने बहुउद्देशीय नदी घाटी परियोजनाएं एवं बांध।</p>
+            </div>
+            <div class="card-footer">
+                <span class="badge">Infrastructure</span>
+                <span class="action-link">प्रैक्टिस करें &rarr;</span>
+            </div>
+        </div>
+
+        <!-- 9. Mountains -->
+        <div class="map-card" onclick="alert('यह प्रैक्टिस मॉड्यूल जल्द लाइव होगा!')">
+            <div class="card-content">
+                <h3>⛰️ पर्वत श्रेणियां (Mountains)</h3>
+                <p>हिमालय, प्रायद्वीपीय पर्वत श्रृंखलाएँ, चोटियाँ और पहाड़ियाँ।</p>
+            </div>
+            <div class="card-footer">
+                <span class="badge">Physical Geo</span>
+                <span class="action-link">प्रैक्टिस करें &rarr;</span>
+            </div>
+        </div>
+
+        <!-- 10. Ramsar Wetlands -->
+        <div class="map-card" onclick="alert('यह प्रैक्टिस मॉड्यूल जल्द लाइव होगा!')">
+            <div class="card-content">
+                <h3>🌾 रामसर आद्रभूमि स्थल (Ramsar Wetlands)</h3>
+                <p>भारत के महत्वपूर्ण रामसर साइट्स और वेटलैंड्स क्षेत्र।</p>
+            </div>
+            <div class="card-footer">
+                <span class="badge">Environment</span>
+                <span class="action-link">प्रैक्टिस करें &rarr;</span>
+            </div>
+        </div>
+
+        <!-- 11. National Parks -->
+        <div class="map-card" onclick="alert('यह प्रैक्टिस मॉड्यूल जल्द लाइव होगा!')">
+            <div class="card-content">
+                <h3>🌲 राष्ट्रीय उद्यान (National Parks)</h3>
+                <p>भारत के सभी प्रमुख नेशनल पार्कों की भौगोलिक स्थिति।</p>
+            </div>
+            <div class="card-footer">
+                <span class="badge">Wildlife</span>
+                <span class="action-link">प्रैक्टिस करें &rarr;</span>
+            </div>
+        </div>
+
+        <!-- 12. Biosphere Reserves -->
+        <div class="map-card" onclick="alert('यह प्रैक्टिस मॉड्यूल जल्द लाइव होगा!')">
+            <div class="card-content">
+                <h3>🌳 बायोस्फीयर रिजर्व (Biosphere Reserves)</h3>
+                <p>जैवमंडल आरक्षित क्षेत्र और संरक्षित प्राकृतिक आवास।</p>
+            </div>
+            <div class="card-footer">
+                <span class="badge">Conservation</span>
+                <span class="action-link">प्रैक्टिस करें &rarr;</span>
+            </div>
+        </div>
+
+        <!-- 13. Sea Ports -->
+        <div class="map-card" onclick="alert('यह प्रैक्टिस मॉड्यूल जल्द लाइव होगा!')">
+            <div class="card-content">
+                <h3>⚓ प्रमुख बंदरगाह (Sea Ports)</h3>
+                <p>भारत के पूर्वी और पश्चिमी तट के प्रमुख समुद्री बंदरगाह।</p>
+            </div>
+            <div class="card-footer">
+                <span class="badge">Transport</span>
+                <span class="action-link">प्रैक्टिस करें &rarr;</span>
+            </div>
+        </div>
+
+        <!-- 14. Airports -->
+        <div class="map-card" onclick="alert('यह प्रैक्टिस मॉड्यूल जल्द लाइव होगा!')">
+            <div class="card-content">
+                <h3>✈️ अंतर्राष्ट्रीय हवाई अड्डे (Airports)</h3>
+                <p>प्रमुख विमानपत्तन और उनकी लोकेशन।</p>
+            </div>
+            <div class="card-footer">
+                <span class="badge">Aviation</span>
+                <span class="action-link">प्रैक्टिस करें &rarr;</span>
+            </div>
+        </div>
+
+        <!-- 15. Mountain Passes -->
+        <div class="map-card" onclick="alert('यह प्रैक्टिस मॉड्यूल जल्द लाइव होगा!')">
+            <div class="card-content">
+                <h3>🏔️ प्रमुख दर्रे (Mountain Passes)</h3>
+                <p>हिमालयी और प्रायद्वीपीय भारत के महत्वपूर्ण पहाड़ी दर्रे।</p>
+            </div>
+            <div class="card-footer">
+                <span class="badge">Geography</span>
+                <span class="action-link">प्रैक्टिस करें &rarr;</span>
+            </div>
+        </div>
+
+        <!-- 16. Tiger Reserves -->
+        <div class="map-card" onclick="alert('यह प्रैक्टिस मॉड्यूल जल्द लाइव होगा!')">
+            <div class="card-content">
+                <h3>🐅 टाइगर रिजर्व (Tiger Reserves)</h3>
+                <p>प्रोजेक्ट टाइगर के अंतर्गत संरक्षित बाघ अभ्यारण्य।</p>
+            </div>
+            <div class="card-footer">
+                <span class="badge">Wildlife</span>
+                <span class="action-link">प्रैक्टिस करें &rarr;</span>
+            </div>
+        </div>
+
+        <!-- 17. Elephant Reserves -->
+        <div class="map-card" onclick="alert('यह प्रैक्टिस मॉड्यूल जल्द लाइव होगा!')">
+            <div class="card-content">
+                <h3>🐘 हाथी रिजर्व (Elephant Reserves)</h3>
+                <p>भारतीय हाथियों के संरक्षण हेतु आरक्षित क्षेत्र।</p>
+            </div>
+            <div class="card-footer">
+                <span class="badge">Wildlife</span>
+                <span class="action-link">प्रैक्टिस करें &rarr;</span>
+            </div>
+        </div>
+
+        <!-- 18. Historic Locations -->
+        <div class="map-card" onclick="alert('यह प्रैक्टिस मॉड्यूल जल्द लाइव होगा!')">
+            <div class="card-content">
+                <h3>🏛️ ऐतिहासिक स्थल (Historic Locations)</h3>
+                <p>प्राचीन, मध्यकालीन और आधुनिक इतिहास से जुड़े स्थल एवं यूनेस्को साइट्स।</p>
+            </div>
+            <div class="card-footer">
+                <span class="badge">History & UNESCO</span>
+                <span class="action-link">प्रैक्टिस करें &rarr;</span>
+            </div>
+        </div>
+
+        <!-- 19. Biodiversity Sites -->
+        <div class="map-card" onclick="alert('यह प्रैक्टिस मॉड्यूल जल्द लाइव होगा!')">
+            <div class="card-content">
+                <h3>🌿 जैव विविधता स्थल (Biodiversity Sites)</h3>
+                <p>हॉटस्पॉट और पारिस्थितिक रूप से संवेदनशील क्षेत्र।</p>
+            </div>
+            <div class="card-footer">
+                <span class="badge">Ecology</span>
+                <span class="action-link">प्रैक्टिस करें &rarr;</span>
+            </div>
+        </div>
+
+        <!-- 20. Lakes -->
+        <div class="map-card" onclick="alert('यह प्रैक्टिस मॉड्यूल जल्द लाइव होगा!')">
+            <div class="card-content">
+                <h3>🏞️ प्रमुख झीलें (Lakes)</h3>
+                <p>प्राकृतिक और कृत्रिम मीठे व खारे पानी की झीलें।</p>
+            </div>
+            <div class="card-footer">
+                <span class="badge">Hydrography</span>
+                <span class="action-link">प्रैक्टिस करें &rarr;</span>
+            </div>
+        </div>
+
+        <!-- 21. Waterfalls -->
+        <div class="map-card" onclick="alert('यह प्रैक्टिस मॉड्यूल जल्द लाइव होगा!')">
+            <div class="card-content">
+                <h3>🌊 जलप्रपात (Waterfalls)</h3>
+                <p>भारत के प्रसिद्ध झरने और उनकी नदियाँ।</p>
+            </div>
+            <div class="card-footer">
+                <span class="badge">Physical Geo</span>
+                <span class="action-link">प्रैक्टिस करें &rarr;</span>
+            </div>
+        </div>
+
+        <!-- 22. Bird Sanctuaries -->
+        <div class="map-card" onclick="alert('यह प्रैक्टिस मॉड्यूल जल्द लाइव होगा!')">
+            <div class="card-content">
+                <h3>🦅 पक्षी अभ्यारण्य (Bird Sanctuaries)</h3>
+                <p>प्रवासी और स्थानीय पक्षियों के संरक्षण स्थल।</p>
+            </div>
+            <div class="card-footer">
+                <span class="badge">Sanctuaries</span>
+                <span class="action-link">प्रैक्टिस करें &rarr;</span>
+            </div>
+        </div>
+
+        <!-- 23. Mining (Mineral Sites) -->
+        <div class="map-card" onclick="alert('यह प्रैक्टिस मॉड्यूल जल्द लाइव होगा!')">
+            <div class="card-content">
+                <h3>⛏️ खनिज एवं खनन क्षेत्र (Mining & Minerals)</h3>
+                <p>कोयला, लोहा, मैंगनीज, अभ्रक और अन्य महत्वपूर्ण खनिज खदानें।</p>
+            </div>
+            <div class="card-footer">
+                <span class="badge">Economy & Geo</span>
+                <span class="action-link">प्रैक्टिस करें &rarr;</span>
+            </div>
+        </div>
+
+        <!-- 24. Geological Monuments -->
+        <div class="map-card" onclick="alert('यह प्रैक्टिस मॉड्यूल जल्द लाइव होगा!')">
+            <div class="card-content">
+                <h3>🪨 भूवैज्ञानिक स्मारक (Geological Monuments)</h3>
+                <p>जीवाश्म और महत्वपूर्ण भू-विरासत स्थल।</p>
+            </div>
+            <div class="card-footer">
+                <span class="badge">Heritage</span>
+                <span class="action-link">प्रैक्टिस करें &rarr;</span>
+            </div>
+        </div>
+
+        <!-- 25. Oil Industry -->
+        <div class="map-card" onclick="alert('यह प्रैक्टिस मॉड्यूल जल्द लाइव होगा!')">
+            <div class="card-content">
+                <h3>🛢️ तेल एवं प्राकृतिक गैस (Oil Industry)</h3>
+                <p>रिफाइनरी, तेल क्षेत्र और गैस पाइपलाइन नेटवर्क।</p>
+            </div>
+            <div class="card-footer">
+                <span class="badge">Energy Resources</span>
+                <span class="action-link">प्रैक्टिस करें &rarr;</span>
+            </div>
+        </div>
+
+        <!-- 26. Stone Age Sites -->
+        <div class="map-card" onclick="alert('यह प्रैक्टिस मॉड्यूल जल्द लाइव होगा!')">
+            <div class="card-content">
+                <h3>🗿 पाषाण कालीन स्थल (Stone Age Sites)</h3>
+                <p>पूरापाषाण, मध्यपाषाण और नवपाषाण कालीन ऐतिहासिक बस्तियाँ।</p>
+            </div>
+            <div class="card-footer">
+                <span class="badge">Ancient History</span>
+                <span class="action-link">प्रैक्टिस करें &rarr;</span>
+            </div>
+        </div>
+
+        <!-- 27. World Countries & Capitals -->
+        <div class="map-card" onclick="alert('यह प्रैक्टिस मॉड्यूल जल्द लाइव होगा!')">
+            <div class="card-content">
+                <h3>🌍 विश्व के देश और राजधानियाँ (World Map)</h3>
+                <p>अंतर्राष्ट्रीय भूगोल, महाद्वीप, देश और उनकी राजधानियाँ।</p>
+            </div>
+            <div class="card-footer">
+                <span class="badge">World Geo</span>
+                <span class="action-link">प्रैक्टिस करें &rarr;</span>
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        <p>&copy; 2026 मैप प्रैक्टिस पोर्टल | सभी अधिकार सुरक्षित</p>
+    </footer>
+</div>
+
+<script>
+    // डार्क मोड टॉगल फंक्शन
+    function toggleTheme() {
+        const body = document.body;
+        const btn = document.querySelector('.theme-btn');
+        if (body.getAttribute('data-theme') === 'light') {
+            body.setAttribute('data-theme', 'dark');
+            btn.innerText = '☀️ लाइट मोड';
+        } else {
+            body.setAttribute('data-theme', 'light');
+            btn.innerText = '🌙 डार्क मोड';
+        }
+    }
+
+    // कार्ड्स को सर्च करने का फंक्शन (Real-time Filter)
+    function filterCards() {
+        let input = document.getElementById('searchInput').value.toLowerCase();
+        let cards = document.getElementsByClassName('map-card');
+
+        for (let i = 0; i < cards.length; i++) {
+            let title = cards[i].getElementsByTagName('h3')[0].innerText.toLowerCase();
+            let desc = cards[i].getElementsByTagName('p')[0].innerText.toLowerCase();
+
+            if (title.includes(input) || desc.includes(input)) {
+                cards[i].style.display = "flex";
+            } else {
+                cards[i].style.display = "none";
+            }
+        }
+    }
+</script>
+
+</body>
+</html>
