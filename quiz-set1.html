@@ -1,0 +1,660 @@
+```html
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>करेंट अफेयर्स क्विज़ - सेट 1 (प्रश्न 1 से 50)</title>
+    <style>
+        :root {
+            --bg-color: #f4f7f6;
+            --container-bg: #ffffff;
+            --text-color: #333333;
+            --card-bg: #fafafa;
+            --border-color: #e0e0e0;
+            --primary-color: #2c3e50;
+            --accent-color: #3498db;
+            --correct-color: #2ecc71;
+            --wrong-color: #e74c3c;
+            --shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #121212;
+            --container-bg: #1e1e1e;
+            --text-color: #f4f7f6;
+            --card-bg: #2d2d2d;
+            --border-color: #444444;
+            --primary-color: #f4f7f6;
+            --accent-color: #2980b9;
+            --correct-color: #27ae60;
+            --wrong-color: #c0392b;
+            --shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            padding: 20px;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--container-bg);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .logo-area h2 {
+            color: var(--accent-color);
+            font-size: 1.3rem;
+        }
+
+        .nav-btns {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: opacity 0.2s;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        .quiz-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            font-weight: bold;
+            color: var(--accent-color);
+        }
+
+        .question-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+
+        .question-title {
+            font-size: 1.15rem;
+            margin-bottom: 20px;
+            line-height: 1.5;
+            font-weight: 600;
+        }
+
+        .options-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .option-item {
+            background: var(--container-bg);
+            border: 2px solid var(--border-color);
+            padding: 12px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 1rem;
+        }
+
+        .option-item:hover {
+            border-color: var(--accent-color);
+            background: var(--bg-color);
+        }
+
+        .option-item.correct {
+            background: rgba(46, 204, 113, 0.2);
+            border-color: var(--correct-color);
+            color: var(--correct-color);
+            font-weight: bold;
+        }
+
+        .option-item.wrong {
+            background: rgba(231, 76, 60, 0.2);
+            border-color: var(--wrong-color);
+            color: var(--wrong-color);
+        }
+
+        .explanation-box {
+            background: rgba(52, 152, 219, 0.1);
+            border-left: 4px solid var(--accent-color);
+            padding: 15px;
+            border-radius: 0 8px 8px 0;
+            margin-top: 15px;
+            display: none;
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+
+        .quiz-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .result-container {
+            text-align: center;
+            display: none;
+        }
+
+        .result-container h2 {
+            font-size: 2rem;
+            color: var(--accent-color);
+            margin-bottom: 15px;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 15px;
+            }
+            .question-title {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body data-theme="light">
+
+<div class="container">
+    <header>
+        <div class="logo-area">
+            <h2>🌟 करेंट अफेयर्स प्रैक्टिस क्विज़ (सेट 1)</h2>
+        </div>
+        <div class="nav-btns">
+            <a href="current-affairs.html" class="btn">📁 लिस्ट पर लौटें</a>
+            <button class="btn" onclick="toggleTheme()">🌙 मोड</button>
+        </div>
+    </header>
+
+    <div id="quiz-box">
+        <div class="quiz-info">
+            <span id="q-number">प्रश्न 1 / 50</span>
+            <span id="score-display">स्कोर: 0</span>
+        </div>
+
+        <div class="question-card">
+            <div class="question-title" id="question-text">प्रश्न लोड हो रहा है...</div>
+            <ul class="options-list" id="options-container">
+                <!-- ऑप्शंस यहाँ जावास्क्रिप्ट से आएंगे -->
+            </ul>
+            <div class="explanation-box" id="explanation-text">
+                <!-- स्पष्टीकरण यहाँ दिखेगा -->
+            </div>
+        </div>
+
+        <div class="quiz-footer">
+            <button class="btn" id="prev-btn" onclick="prevQuestion()" style="display:none;">&larr; पिछला</button>
+            <button class="btn" id="next-btn" onclick="nextQuestion()" style="margin-left: auto;">अगला प्रश्न &rarr;</button>
+        </div>
+    </div>
+
+    <div class="result-container" id="result-box">
+        <h2>🎉 क्विज़ समाप्त हुई!</h2>
+        <p id="final-score-text" style="font-size: 1.2rem; margin-bottom: 20px;"></p>
+        <button class="btn" onclick="restartQuiz()">🔄 दोबारा प्रयास करें</button>
+        <a href="current-affairs.html" class="btn" style="background: #27ae60;">📁 अन्य सेट देखें</a>
+    </div>
+</div>
+
+<script>
+    // 50 प्रश्नों का डेटाबेस
+    const quizData = [
+        {
+            question: "Q1. सारस सर्किट (Sarus Circuit) के संबंध में निम्नलिखित कथनों पर विचार कीजिए:\n1. यह उत्तर प्रदेश सरकार द्वारा शुरू की गई एक ईको-टूरिज्म और वन्यजीव संरक्षण पहल है।\n2. इस सर्किट को मैनपुरी और इटावा जिलों की आर्द्रभूमियों (wetlands) में विकसित किया जाएगा।\nउपर्युक्त कथनों में से कौन-सा/से सही है/हैं?",
+            options: ["केवल 1", "केवल 2", "1 और 2 दोनों", "न तो 1 और न ही 2"],
+            answer: 2,
+            explanation: "उत्तर: (c) 1 और 2 दोनों। इसका उद्देश्य सारस क्रेन के संरक्षण को बढ़ावा देना है। सारस क्रेन उत्तर प्रदेश का राज्य पक्षी है।"
+        },
+        {
+            question: "Q2. प्रधानमंत्री गरीब कल्याण अन्न योजना (PMGKAY) के तहत केंद्रीय बैंक डिजिटल मुद्रा (CBDC) आधारित खाद्य सब्सिडी वितरण हेतु पायलट परियोजना हाल ही में कहाँ शुरू की गई है?",
+            options: ["चंडीगढ़", "लक्षद्वीप", "पुडुचेरी", "दमन और दीव"],
+            answer: 2,
+            explanation: "उत्तर: (c) पुडुचेरी। इसके तहत खाद्य सब्सिडी को प्रोग्रामेबल CBDC टोकन के रूप में लाभार्थियों के वॉलेट में सीधे जमा किया जाएगा।"
+        },
+        {
+            question: "Q3. भारत के मेट्रो नेटवर्क के संबंध में निम्नलिखित कथनों पर विचार कीजिए:\n1. वर्ष 2026 तक भारत का परिचालन मेट्रो नेटवर्क 1,143 किलोमीटर से अधिक हो गया है।\n2. कुल परिचालन मेट्रो नेटवर्क की लंबाई के आधार पर भारत, चीन और अमेरिका के बाद विश्व में तीसरे स्थान पर है।\nकौन-सा/से सही है/हैं?",
+            options: ["केवल 1", "केवल 2", "1 और 2 दोनों", "न तो 1 और न ही 2"],
+            answer: 2,
+            explanation: "उत्तर: (c) 1 और 2 दोनों सही हैं।"
+        },
+        {
+            question: "Q4. मूनशॉट परियोजना (Moonshot Project) के संबंध में कौन सा कथन सही है?",
+            options: ["इसका उद्देश्य ब्रेन को-प्रोसेसर विकसित करना है", "यह IIT मद्रास द्वारा संचालित है", "a और b दोनों", "इनमें से कोई नहीं"],
+            answer: 0,
+            explanation: "उत्तर: (a) केवल 1 सही है। इसका नेतृत्व भारतीय विज्ञान संस्थान (IISc), बेंगलुरु द्वारा किया जा रहा है।"
+        },
+        {
+            question: "Q5. 'समृद्धि केंद्र' (Samriddhi Kendra) का उद्घाटन उत्तर प्रदेश के किस जिले के उमरी गांव में किया गया? (ध्यान दें: कथन आधारित)",
+            options: ["झांसी", "गुना (मध्य प्रदेश)", "वाराणसी", "लखनऊ"],
+            answer: 1,
+            explanation: "उत्तर: इसका उद्घाटन मध्य प्रदेश के गुना ज़िले के उमरी गाँव में किया गया था, इसलिए पहला कथन गलत था।"
+        },
+        {
+            question: "Q6. राष्ट्रीय ह्यूमन पैपिलोमावायरस (HPV) टीकाकरण अभियान का उद्देश्य किस आयु वर्ग की लड़कियों को सर्वाइकल कैंसर से सुरक्षा प्रदान करना है?",
+            options: ["10 वर्षीय", "12 वर्षीय", "14 वर्षीय", "16 वर्षीय"],
+            answer: 2,
+            explanation: "उत्तर: 14 वर्षीय लड़कियों को। प्रधानमंत्री नरेंद्र मोदी ने राजस्थान के अजमेर से इसका शुभारंभ किया था।"
+        },
+        {
+            question: "Q7. 'पिंक सहेली स्मार्ट कार्ड' पहल हाल ही में किस राज्य/केंद्र शासित प्रदेश द्वारा शुरूي की गई है?",
+            options: ["हरियाणा", "पंजाब", "दिल्ली (NCT)", "चंडीगढ़"],
+            answer: 2,
+            explanation: "उत्तर: (c) NCT ऑफ़ दिल्ली सरकार द्वारा महिलाओं और ट्रांसजेंडरों के लिए मुफ्त बस यात्रा हेतु।"
+        },
+        {
+            question: "Q8. 'निर्भया निशा' पहल, जिसका उद्देश्य रात के समय यात्रा करने वाली महिलाओं की सुरक्षा सुदृढ़ करना है, किस राज्य ने शुरू की?",
+            options: ["तमिलनाडु", "कर्नाटक", "केरल", "तेलंगाना"],
+            answer: 2,
+            explanation: "उत्तर: (c) केरल।"
+        },
+        {
+            question: "Q9. मुख्यमंत्री ग्राम परिवहन योजना के संदर्भ में 10 मार्च 2026 को किस राज्य मंत्रिमंडल ने मंजूरी दी?",
+            options: ["उत्तर प्रदेश", "बिहार", "मध्य प्रदेश", "राजस्थान"],
+            answer: 0,
+            explanation: "उत्तर: उत्तर प्रदेश मंत्रिमंडल द्वारा। इसके तहत 15 से 28 सीट वाले छोटे वाहनों का संचालन होगा।"
+        },
+        {
+            question: "Q10. भारत में पहली बार निष्क्रिय इच्छामृत्यु (Passive Euthanasia) की अनुमति उच्चतम न्यायालय ने किस मामले में दी?",
+            options: ["हरीश राणा मामला (गाजियाबाद)", "अरुणा शानबाग मामला", "कॉमन कॉज मामला", "इनमें से कोई नहीं"],
+            answer: 0,
+            explanation: "उत्तर: गाजियाबाद के हरीश राणा मामले में।"
+        },
+        {
+            question: "Q11. फरवरी 2026 में आयोजित AI4Agri 2026 ग्लोबल कॉन्फ्रेंस एवं इन्वेस्टर समिट कहाँ आयोजित हुई?",
+            options: ["नई दिल्ली", "हैदराबाद", "मुंबई (जियो वर्ल्ड सेंटर)", "गांधीनगर"],
+            answer: 2,
+            explanation: "उत्तर: (c) जियो वर्ल्ड कन्वेंशन सेंटर, मुंबई।"
+        },
+        {
+            question: "Q12. भारतीय सेना की सेंट्रल कमांड द्वारा प्रथम रणनीतिक संचार सम्मेलन मार्च 2026 में कहाँ आयोजित हुआ?",
+            options: ["वाराणसी", "नोएडा", "लखनऊ", "प्रयागराज"],
+            answer: 2,
+            explanation: "उत्तर: (c) लखनऊ।"
+        },
+        {
+            question: "Q13. आवश्यक वस्तु अधिनियम (Essential Commodities Act) किस वर्ष लागू किया गया था?",
+            options: ["1947", "1951", "1955", "1965"],
+            answer: 2,
+            explanation: "उत्तर: (c) 1955।"
+        },
+        {
+            question: "Q14. 9वें अंतर्राष्ट्रीय संताल सम्मेलन का आयोजन निम्नलिखित में से किस स्थान पर किया गया था?",
+            options: ["रांची", "अगरतला", "दार्जिलिंग", "रायगढ़"],
+            answer: 2,
+            explanation: "उत्तर: (c) दार्जिलिंग, पश्चिम बंगाल।"
+        },
+        {
+            question: "Q15. कुर्दिस्तान क्षेत्र मुख्य रूप से किन देशों में फैला हुआ है?",
+            options: ["तुर्की, इराक, ईरान, सीरिया", "केवल इराक और ईरान", "सउदी अरब और ओमान", "मिस्र और जॉर्डन"],
+            answer: 0,
+            explanation: "उत्तर: यह पूर्वी तुर्की, उत्तरी इराक, पश्चिमी ईरान तथा उत्तरी सीरिया और आर्मेनिया में फैला है।"
+        },
+        {
+            question: "Q16. रायसीना संवाद 2026 का मुख्य विषय (Theme) क्या था?",
+            options: ["संस्कार - अस्मिता, अनुकूलन, उन्नति", "ग्लोबल पीस एंड सिक्योरिटी", "टेक्नोलॉजी फॉर फ्यूचर", "सस्टेनेबल डेवलपमेंट"],
+            answer: 0,
+            explanation: "उत्तर: 'संस्कार - अस्मिता, अनुकूलन, उन्नति' (Samskara - Assertion, Accommodation, Advancement)।"
+        },
+        {
+            question: "Q17. एक ही वित्तीय वर्ष में 50 मिलियन टन (MT) लौह अयस्क उत्पादन का आंकड़ा पार करने वाली पहली खनन कंपनी कौन बनी?",
+            options: ["कोल इंडिया", "हिंदुस्तान कॉपर", "NALCO", "NMDC लिमिटेड"],
+            answer: 3,
+            explanation: "उत्तर: (d) NMDC लिमिटेड।"
+        },
+        {
+            question: "Q18. अरावली पर्वतमाला के पारिस्थितिक संवेदनशील क्षेत्रों की वैज्ञानिक परिभाषा हेतु नियुक्त समिति की अध्यक्षता किसे सौंपी गई?",
+            options: ["गगनदीप कांग", "कंचन देवी", "सुनीता नारायण", "वंदना शिवा"],
+            answer: 1,
+            explanation: "उत्तर: (b) कंचन देवी।"
+        },
+        {
+            question: "Q19. भारत के पहले समर्पित क्वांटम एवं AI विश्वविद्यालय परिसर की स्थापना की घोषणा कहाँ की गई?",
+            options: ["गांधीनगर", "बेंगलुरु", "अमरावती", "चेन्नई"],
+            answer: 2,
+            explanation: "उत्तर: (c) अमरावती।"
+        },
+        {
+            question: "Q20. प्रधानमंत्री नरेंद्र मोदी को किस देश की संसद ने 'स्पीकर ऑफ द नेसेट मेडल' प्रदान किया?",
+            options: ["फ्रांस", "इजराइल", "इटली", "जर्मनी"],
+            answer: 1,
+            explanation: "उत्तर: (b) इजराइल।"
+        },
+        {
+            question: "Q21. विश्व बैंक ने उत्तर प्रदेश स्वच्छ वायु कार्यक्रम (UP-CAMP) के लिए कितनी वित्तीय सहायता मंजूर की?",
+            options: ["100 मिलियन डॉलर", "200 मिलियन डॉलर", "299.66 मिलियन डॉलर", "500 मिलियन डॉलर"],
+            answer: 2,
+            explanation: "उत्तर: (c) 299.66 मिलियन अमेरिकी डॉलर।"
+        },
+        {
+            question: "Q22. प्रंबानन मंदिर परिसर के संरक्षण हेतु भारत ने किस देश के साथ समझौता किया है?",
+            options: ["थाईलैंड", "कंबोडिया", "इंडोनेशिया", "मलेशिया"],
+            answer: 2,
+            explanation: "उत्तर: (c) इंडोनेशिया। यह दक्षिणी जावा में 9वीं शताब्दी का हिंदू मंदिर है।"
+        },
+        {
+            question: "Q23. न्यूयॉर्क शॉर्ट एनिमेशन फेस्टिवल 2026 में सर्वश्रेष्ठ निर्देशक का पुरस्कार जीतने वाली 'च्यिमी' फिल्म के निर्देशक कौन हैं?",
+            options: ["रिमा दास", "डॉ. पार्थ सारथी महंत", "पान नलिन", "शौनक सेन"],
+            answer: 1,
+            explanation: "उत्तर: (b) डॉ. पार्थ सारथी महंत।"
+        },
+        {
+            question: "Q24. नेपाल की पहली ट्रांसजेंडर महिला सांसद कौन हैं?",
+            options: ["सबा शॉल", "भूमिका श्रेष्ठ", "तरणजीत सिंह", "इनमें से कोई नहीं"],
+            answer: 1,
+            explanation: "उत्तर: भूमिका श्रेष्ठ।"
+        },
+        {
+            question: "Q25. 60वें ज्ञानपीठ पुरस्कार से किस साहित्यकार को सम्मानित किया गया?",
+            options: ["पेरुमल मुरुगन", "आर. वैरामुथु", "सलमा", "जयमोहन"],
+            answer: 1,
+            explanation: "उत्तर: (b) आर. वैरामुथु (तीसरे तमिल लेखक)।"
+        },
+        {
+            question: "Q26. 'महिला सशक्तिकरण ट्रेलब्लेज़र पुरस्कार 2026' किसे मिला?",
+            options: ["हेमंत सोरेन", "कल्पना सोरेन", "ममता बनर्जी", "अन्नपूर्णा देवी"],
+            answer: 1,
+            explanation: "उत्तर: (b) कल्पना सोरेन।"
+        },
+        {
+            question: "Q27. साहित्य अकादमी पुरस्कार 2025 में हिंदी भाषा के लिए किसे सम्मानित किया गया?",
+            options: ["ममता कालिया", "नवजीत सरना", "महेंद्र", "साधु भद्रेशदास"],
+            answer: 0,
+            explanation: "उत्तर: ममता कालिया (हिंदी हेतु)।"
+        },
+        {
+            question: "Q28. 'करुणा: द पावर ऑफ कम्पैशन' पुस्तक के लेखक कौन हैं?",
+            options: ["अमर्त्य सेन", "कैलाश सत्यार्थी", "अभिजीत बनर्जी", "अरविंद अडिगा"],
+            answer: 1,
+            explanation: "उत्तर: (b) कैलाश सत्यार्थी।"
+        },
+        {
+            question: "Q29. राष्ट्रीय विज्ञान दिवस कब मनाया जाता है?",
+            options: ["28 फरवरी", "3 मार्च", "15 मार्च", "21 मार्च"],
+            answer: 0,
+            explanation: "उत्तर: 28 फरवरी।"
+        },
+        {
+            question: "Q30. 98वें ऑस्कर (2026) में सर्वश्रेष्ठ फिल्म का पुरस्कार किसने जीता?",
+            options: ["ओपेनहाइमर", "वन बैटल आफ्टर अनॉदर", "ड्यून 2", "पुअर थिंग्स"],
+            answer: 1,
+            explanation: "उत्तर: 'वन बैटल आफ्टर अनॉदर'।"
+        },
+        {
+            question: "Q31. ईरान के सर्वोच्च नेता अयातुल्लाह अली ख़ामेनेई की मृत्यु अमेरिका-इजरायल के किस अभियान में हुई?",
+            options: ["ऑपरेशन आयरन शील्ड", "ऑपरेशन लायन्स रोर", "ऑपरेशन एपिक फ्यूरी", "ऑपरेशन फ्रीडम"],
+            answer: 2,
+            explanation: "उत्तर: (c) ऑपरेशन एपिक फ्यूरी।"
+        },
+        {
+            question: "Q32. इसरो द्वारा सीई-20 क्रायोजेनिक इंजन का सफल परीक्षण हाल ही में कहाँ किया गया?",
+            options: ["श्रीहरिकोटा", "थुम्बा", "महेंद्रगिरी, तमिलनाडु", "हासन"],
+            answer: 2,
+            explanation: "उत्तर: (c) महेंद्रगिरी, तमिलनाडु।"
+        },
+        {
+            question: "Q33. बीसीसीआई पुरस्कार 2026 में महिला लाइफटाइम अचीवमेंट पुरस्कार किसे मिला?",
+            options: ["झूलन गोस्वामी", "मिताली राज", "हरमनप्रीत कौर", "स्मृति मंधाना"],
+            answer: 1,
+            explanation: "उत्तर: मिताली राज को प्रदान किया गया।"
+        },
+        {
+            question: "Q34. भारत के पहले एम्फीबियस (उभयचर) ड्रोन का नाम क्या है?",
+            options: ["गरुड़", "अवतार", "वरुण", "त्रिनेत्र"],
+            answer: 1,
+            explanation: "उत्तर: (b) अवतार (एक्वाएयरएक्स स्टार्टअप द्वारा विकसित)।"
+        },
+        {
+            question: "Q35. अंतर्राष्ट्रीय महिला दिवस कब मनाया जाता है?",
+            options: ["8 मार्च", "22 मार्च", "24 मार्च", "30 मार्च"],
+            answer: 0,
+            explanation: "उत्तर: 8 मार्च।"
+        },
+        {
+            question: "Q36. एशियन डेफ क्रिकेट एसोसिएशन टी20 एशिया कप 2026 का खिताब किसने जीता?",
+            options: ["श्रीलंका को हराकर भारत ने", "पाकिस्तान को हराकर भारत ने", "बांग्लादेश ने", "ऑस्टेलिया ने"],
+            answer: 0,
+            explanation: "उत्तर: भारत ने फाइनल में श्रीलंका को हराया।"
+        },
+        {
+            question: "Q37. 91वीं रणजी ट्रॉफी (2025-26) का विजेता कौन बना?",
+            options: ["कर्नाटक", "मुंबई", "जम्मू-कश्मीर", "सौराष्ट्र"],
+            answer: 2,
+            explanation: "उत्तर: (c) जम्मू-कश्मीर (कप्तान पारस डोगरा)।"
+        },
+        {
+            question: "Q38. आईसीसी पुरुष टी-20 विश्व कप 2026 का खिताब भारत ने कौन सी बार जीता?",
+            options: ["दूसरी बार", "तीसरी बार", "चौथी बार", "पहली बार"],
+            answer: 1,
+            explanation: "उत्तर: तीसरी बार (2007, 2024, 2026)।"
+        },
+        {
+            question: "Q39. सिपरी (SIPRI) रिपोर्ट 2025 के अनुसार विश्व का सबसे बड़ा हथियार आयातक क्षेत्र कौन बना?",
+            options: ["एशिया", "यूरोप", "मध्य पूर्व", "अफ़्रीका"],
+            answer: 1,
+            explanation: "उत्तर: यूरोप (33% हिस्सेदारी के साथ)।"
+        },
+        {
+            question: "Q40. प्रथम खेलो इंडिया जनजातीय खेल 2026 का आधिकारिक शुभंकर क्या था?",
+            options: ["मोइली", "मोरवीर (Morveer)", "शेरू", "अपू"],
+            answer: 1,
+            explanation: "उत्तर: 'मोरवीर' (Morveer), आयोजन छत्तीसगढ़ में हुआ।"
+        },
+        {
+            question: "Q41. संतोष ट्रॉफी 2025-26 का खिताब किस टीम ने जीता?",
+            options: ["केरल", "पश्चिम बंगाल", "सर्विसेज", "पंजाब"],
+            answer: 2,
+            explanation: "उत्तर: (c) सर्विसेज।"
+        },
+        {
+            question: "Q42. भारतीय रेलवे द्वारा लॉन्च 'शाइन' (SHINE) ऐप का प्रमुख उद्देश्य क्या है?",
+            options: ["छुट्टी प्रबंधन", "कार्यस्थल पर यौन उत्पीड़न की शिकायत दर्ज करना", "ट्रेन लाइव स्टेटस", "कर्मचारी प्रशिक्षण"],
+            answer: 1,
+            explanation: "उत्तर: (b) कार्यस्थल पर यौन उत्पीड़न की शिकायत दर्ज करना।"
+        },
+        {
+            question: "Q43. IQ Air वर्ल्ड एयर क्वालिटी रिपोर्ट 2025 के अनुसार विश्व का सबसे प्रदूषित शहर कौन सा रहा?",
+            options: ["दिल्ली", "लोनी (गाजियाबाद)", "लाहौर", "बीजिंग"],
+            answer: 1,
+            explanation: "उत्तर: उत्तर प्रदेश का लोनी (गाजियाबाद)।"
+        },
+        {
+            question: "Q44. ग्लोबल टेररिज्म इंडेक्स 2026 में भारत का कौन सा स्थान रहा?",
+            options: ["10वां", "11वां", "13वां", "15वां"],
+            answer: 2,
+            explanation: "उत्तर: (c) 13वां।"
+        },
+        {
+            question: "Q45. प्रथम राष्ट्रीय राजमार्ग हरित आवरण सूचकांक 2025-26 में किस राज्य ने सर्वाधिक हरित आवरण दर्ज किया?",
+            options: ["केरल", "असम", "उत्तराखंड", "हिमाचल प्रदेश"],
+            answer: 1,
+            explanation: "उत्तर: (b) असम।"
+        },
+        {
+            question: "Q46. "भारत के खेल उपकरण निर्माण क्षेत्र की निर्यात क्षमता" रिपोर्ट किस संस्था ने जारी की?",
+            options: ["RBI", "नीति आयोग", "खेल मंत्रालय", "वाणिज्य मंत्रालय"],
+            answer: 1,
+            explanation: "उत्तर: (b) नीति आयोग।"
+        },
+        {
+            question: "Q47. विश्व जल विकास रिपोर्ट किस संस्था द्वारा जारी की जाती है?",
+            options: ["विश्व बैंक", "संयुक्त राष्ट्र (UN)", "IWMI", "UNDP"],
+            answer: 1,
+            explanation: "उत्तर: (b) संयुक्त राष्ट्र।"
+        },
+        {
+            question: "Q48. सोशल मीडिया से भ्रामक वित्तीय पोस्टों की निगरानी हेतु 'सुदर्शन' (Sudarshan) टूल किसने लॉन्च किया है?",
+            options: ["RBI", "SEBI", "NPCI", "वित्त मंत्रालय"],
+            answer: 1,
+            explanation: "उत्तर: (b) SEBI (भारतीय प्रतिभूति और विनिमय बोर्ड)।"
+        },
+        {
+            question: "Q49. मार्च 2026 में भारतीय सेना द्वारा युद्धाभ्यास 'अमोघ ज्वाला' कहाँ आयोजित किया गया?",
+            options: ["जैसलमेर", "पोखरण", "बबीना, झाँसी (उत्तर प्रदेश)", "महू"],
+            answer: 2,
+            explanation: "उत्तर: (c) बबीना, झाँसी (उत्तर प्रदेश)।"
+        },
+        {
+            question: "Q50. संयुक्त सैन्य अभ्यास 'फ्रीडम शील्ड 2026' किन दो देशों के बीच आयोजित हुआ?",
+            options: ["दक्षिण कोरिया और जापान", "अमेरिका और जापान", "दक्षिण कोरिया और अमेरिका", "अमेरिका और ऑस्ट्रेलिया"],
+            answer: 2,
+            explanation: "उत्तर: (c) दक्षिण कोरिया और अमेरिका।"
+        }
+    ];
+
+    let currentQuestionIndex = 0;
+    let score = 0;
+    let userAnswers = new Array(quizData.length).fill(null);
+
+    const questionText = document.getElementById("question-text");
+    const optionsContainer = document.getElementById("options-container");
+    const explanationText = document.getElementById("explanation-text");
+    const qNumber = document.getElementById("q-number");
+    const scoreDisplay = document.getElementById("score-display");
+    const nextBtn = document.getElementById("next-btn");
+    const prevBtn = document.getElementById("prev-btn");
+    const quizBox = document.getElementById("quiz-box");
+    const resultBox = document.getElementById("result-box");
+    const finalScoreText = document.getElementById("final-score-text");
+
+    function loadQuestion() {
+        const q = quizData[currentQuestionIndex];
+        qNumber.innerText = `प्रश्न ${currentQuestionIndex + 1} / ${quizData.length}`;
+        scoreDisplay.innerText = `स्कोर: ${score}`;
+        questionText.innerText = q.question;
+        
+        optionsContainer.innerHTML = "";
+        explanationText.style.display = "none";
+
+        q.options.forEach((opt, index) => {
+            const li = document.createElement("li");
+            li.className = "option-item";
+            li.innerText = opt;
+            
+            // यदि पहले से उत्तर दिया जा चुका है तो उसे हाईलाइट करें
+            if (userAnswers[currentQuestionIndex] !== null) {
+                if (index === q.answer) {
+                    li.classList.add("correct");
+                }
+                if (userAnswers[currentQuestionIndex] === index && index !== q.answer) {
+                    li.classList.add("wrong");
+                }
+            } else {
+                li.onclick = () => selectOption(index);
+            }
+            optionsContainer.appendChild(li);
+        });
+
+        if (userAnswers[currentQuestionIndex] !== null) {
+            explanationText.innerText = q.explanation;
+            explanationText.style.display = "block";
+        }
+
+        prevBtn.style.display = currentQuestionIndex > 0 ? "inline-block" : "none";
+        nextBtn.innerText = currentQuestionIndex === quizData.length - 1 ? "समाप्त करें" : "अगला प्रश्न →";
+    }
+
+    function selectOption(selectedIndex) {
+        if (userAnswers[currentQuestionIndex] !== null) return; // एक बार चुनने के बाद बदलाव नहीं
+
+        userAnswers[currentQuestionIndex] = selectedIndex;
+        const q = quizData[currentQuestionIndex];
+        const options = optionsContainer.children;
+
+        if (selectedIndex === q.answer) {
+            options[selectedIndex].classList.add("correct");
+            score += 2; // प्रत्येक सही उत्तर पर 2 अंक
+        } else {
+            options[selectedIndex].classList.add("wrong");
+            options[q.answer].classList.add("correct");
+        }
+
+        scoreDisplay.innerText = `स्कोर: ${score}`;
+        explanationText.innerText = q.explanation;
+        explanationText.style.display = "block";
+    }
+
+    function nextQuestion() {
+        if (currentQuestionIndex < quizData.length - 1) {
+            currentQuestionIndex++;
+            loadQuestion();
+        } else {
+            showResult();
+        }
+    }
+
+    function prevQuestion() {
+        if (currentQuestionIndex > 0) {
+            currentQuestionIndex--;
+            loadQuestion();
+        }
+    }
+
+    function showResult() {
+        quizBox.style.display = "none";
+        resultBox.style.display = "block";
+        finalScoreText.innerText = `आपने ${quizData.length} में से ${score / 2} प्रश्न सही किए! कुल प्राप्तांक: ${score} / ${quizData.length * 2}`;
+    }
+
+    function restartQuiz() {
+        currentQuestionIndex = 0;
+        score = 0;
+        userAnswers.fill(null);
+        quizBox.style.display = "block";
+        resultBox.style.display = "none";
+        loadQuestion();
+    }
+
+    function toggleTheme() {
+        const body = document.body;
+        if (body.getAttribute("data-theme") === "light") {
+            body.setAttribute("data-theme", "dark");
+        } else {
+            body.setAttribute("data-theme", "light");
+        }
+    }
+
+    // पहली बार लोड करें
+    loadQuestion();
+</script>
+
+</body>
+</html>
+```
