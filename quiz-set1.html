@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>करेंट अफेयर्स क्विज़ - सेट 1 (सेविंग सपोर्ट)</title>
+    <title>करेंट अफेयर्स क्विज़ - सेट 1 (सेव बटन के साथ)</title>
     <style>
         :root {
             --bg-color: #f4f7f6;
@@ -15,6 +15,7 @@
             --accent-color: #3498db;
             --correct-color: #27ae60;
             --wrong-color: #e74c3c;
+            --save-color: #f39c12;
             --shadow: 0 4px 15px rgba(0,0,0,0.08);
         }
 
@@ -28,6 +29,7 @@
             --accent-color: #2980b9;
             --correct-color: #2ecc71;
             --wrong-color: #c0392b;
+            --save-color: #d68910;
             --shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
 
@@ -93,7 +95,7 @@
 
         .quiz-title-box {
             text-align: center;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
 
         .quiz-title-box h1 {
@@ -102,9 +104,15 @@
             margin-bottom: 5px;
         }
 
-        .quiz-title-box p {
-            color: #7f8c8d;
-            font-size: 0.95rem;
+        .live-score-bar {
+            background: var(--accent-color);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 25px;
         }
 
         .question-card {
@@ -114,13 +122,38 @@
             border-radius: 10px;
             margin-bottom: 20px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+            position: relative;
+        }
+
+        .q-header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
         }
 
         .q-number {
             font-weight: bold;
             color: var(--accent-color);
-            margin-bottom: 8px;
             font-size: 0.95rem;
+        }
+
+        /* सेव बटन स्टाइल */
+        .save-btn {
+            background: transparent;
+            border: 1px solid var(--save-color);
+            color: var(--save-color);
+            padding: 4px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+
+        .save-btn:hover, .save-btn.saved {
+            background: var(--save-color);
+            color: white;
         }
 
         .q-text {
@@ -143,9 +176,10 @@
             cursor: pointer;
             transition: all 0.2s;
             font-size: 0.95rem;
+            display: block;
         }
 
-        .option-item:hover {
+        .option-item:hover:not(.disabled) {
             border-color: var(--accent-color);
             background: rgba(52, 152, 219, 0.05);
         }
@@ -167,6 +201,10 @@
             color: var(--wrong-color);
         }
 
+        .option-item.disabled {
+            cursor: not-allowed;
+        }
+
         .explanation-box {
             display: none;
             margin-top: 12px;
@@ -178,7 +216,7 @@
             line-height: 1.4;
         }
 
-        .submit-container {
+        .footer-actions {
             text-align: center;
             margin-top: 30px;
             margin-bottom: 20px;
@@ -186,33 +224,6 @@
             gap: 15px;
             justify-content: center;
             flex-wrap: wrap;
-        }
-
-        .submit-btn {
-            background: var(--correct-color);
-            color: white;
-            border: none;
-            padding: 12px 30px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            border-radius: 8px;
-            cursor: pointer;
-            box-shadow: 0 4px 10px rgba(39, 174, 96, 0.3);
-        }
-
-        .result-box {
-            display: none;
-            background: var(--card-bg);
-            border: 2px solid var(--accent-color);
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .result-box h2 {
-            color: var(--accent-color);
-            margin-bottom: 8px;
         }
     </style>
 </head>
@@ -231,13 +242,12 @@
 
     <div class="quiz-title-box">
         <h1>करेंट अफेयर्स अभ्यास - सेट 1</h1>
-        <p>उत्तर सेव रहेंगे। पेज रिफ्रेश होने पर भी आपकी प्रगति सुरक्षित रहेगी।</p>
+        <p>ऑन-द-स्पॉट रिजल्ट, एक्सप्लेनेशन और महत्वपूर्ण प्रश्नों को सेव करने की सुविधा।</p>
     </div>
 
-    <!-- रिजल्ट दिखाने का बॉक्स -->
-    <div class="result-box" id="resultBox">
-        <h2 id="resultTitle">📊 आपका परिणाम</h2>
-        <p id="resultText" style="font-size: 1.1rem; font-weight: bold;"></p>
+    <!-- लाइव स्कोर बार -->
+    <div class="live-score-bar" id="liveScoreBar">
+        हल किए गए प्रश्न: 0 | सही स्कोर: 0
     </div>
 
     <!-- सभी प्रश्नों की सूची -->
@@ -245,10 +255,8 @@
         <p style="text-align: center; color: #7f8c8d;">प्रश्न लोड हो रहे हैं...</p>
     </div>
 
-    <!-- सबमिट और रिसेट बटन -->
-    <div class="submit-container" id="submitContainer">
-        <button class="submit-btn" onclick="submitQuiz()">सभी उत्तर सबमिट करें & देखें स्कोर</button>
-        <button class="reset-btn" onclick="resetQuiz()">🔄 क्विज़ रीसेट करें (다बारा शुरू करें)</button>
+    <div class="footer-actions">
+        <button class="reset-btn" onclick="resetQuiz()">🔄 क्विज़ रीसेट करें (सारे उत्तर हटाएं)</button>
     </div>
 </div>
 
@@ -567,127 +575,136 @@
     ];
 
     let userAnswers = {};
-    let isSubmitted = false;
+    let savedQuestions = {};
 
-    // पेज लोड होने पर लोकल स्टोरेज से पुराना डेटा लोड करना
     function renderQuiz() {
         const container = document.getElementById("allQuestionsContainer");
         container.innerHTML = "";
 
-        // सेव किए गए उत्तर और सबमिट स्टेटस लोड करें
-        let savedAnswers = localStorage.getItem('quiz_answers_set1');
+        let savedAnswers = localStorage.getItem('quiz_instant_answers_set1');
         if (savedAnswers) {
             userAnswers = JSON.parse(savedAnswers);
         }
 
-        let savedSubmitState = localStorage.getItem('quiz_submitted_set1');
-        if (savedSubmitState === 'true') {
-            isSubmitted = true;
+        let savedQList = localStorage.getItem('quiz_saved_questions_set1');
+        if (savedQList) {
+            savedQuestions = JSON.parse(savedQList);
         }
 
         questions.forEach((q, index) => {
             let card = document.createElement("div");
             card.className = "question-card";
+            card.id = `card-${index}`;
+
+            let isAnswered = userAnswers[index] !== undefined;
+            let selectedOpt = userAnswers[index];
+            let isSaved = savedQuestions[index] ? true : false;
 
             let optionsHtml = "";
             q.options.forEach((opt, optIndex) => {
-                let isChecked = (userAnswers[index] === optIndex) ? "checked" : "";
-                let disabledAttr = isSubmitted ? "disabled" : "";
-                
+                let isChecked = (selectedOpt === optIndex) ? "checked" : "";
+                let disabledAttr = isAnswered ? "disabled" : "";
+                let extraClass = "";
+
+                if (isAnswered) {
+                    if (optIndex === q.answer) {
+                        extraClass = "correct-ans";
+                    } else if (optIndex === selectedOpt) {
+                        extraClass = "wrong-ans";
+                    }
+                }
+
                 optionsHtml += `
-                    <label class="option-item" id="opt-${index}-${optIndex}">
-                        <input type="radio" name="question-${index}" value="${optIndex}" ${isChecked} ${disabledAttr} onclick="selectOption(${index}, ${optIndex})">
+                    <label class="option-item ${extraClass} ${isAnswered ? 'disabled' : ''}" id="opt-${index}-${optIndex}">
+                        <input type="radio" name="question-${index}" value="${optIndex}" ${isChecked} ${disabledAttr} onclick="checkInstantAnswer(${index}, ${optIndex})">
                         ${String.fromCharCode(65 + optIndex)}. ${opt}
                     </label>
                 `;
             });
 
             card.innerHTML = `
-                <div class="q-number">प्रश्न ${index + 1} / ${questions.length}</div>
+                <div class="q-header-top">
+                    <div class="q-number">प्रश्न ${index + 1} / ${questions.length}</div>
+                    <button class="save-btn ${isSaved ? 'saved' : ''}" id="save-btn-${index}" onclick="toggleSaveQuestion(${index})">
+                        ${isSaved ? '⭐ सहेजा गया (Saved)' : '💾 प्रश्न सेव करें'}
+                    </button>
+                </div>
                 <div class="q-text">${q.q}</div>
                 <div class="options-list">${optionsHtml}</div>
-                <div class="explanation-box" id="exp-${index}" style="display: ${isSubmitted ? 'block' : 'none'};">
+                <div class="explanation-box" id="exp-${index}" style="display: ${isAnswered ? 'block' : 'none'};">
                     <strong>स्पष्टीकरण:</strong> ${q.exp}
                 </div>
             `;
             container.appendChild(card);
         });
 
-        // अगर पहले ही सबमिट किया जा चुका है तो रिजल्ट और रंग दिखाएं
-        if (isSubmitted) {
-            applyResults();
-        }
+        updateLiveScore();
     }
 
-    // विकल्प चुनने पर लोकल स्टोरेज में सेव करना
-    function selectOption(qIndex, optIndex) {
-        if (isSubmitted) return;
+    // ऑन द स्पॉट रिजल्ट और एक्सप्लेनेशन दिखाना
+    function checkInstantAnswer(qIndex, optIndex) {
+        if (userAnswers[qIndex] !== undefined) return;
+
         userAnswers[qIndex] = optIndex;
-        localStorage.setItem('quiz_answers_set1', JSON.stringify(userAnswers));
+        localStorage.setItem('quiz_instant_answers_set1', JSON.stringify(userAnswers));
+
+        let q = questions[qIndex];
+        let correctIndex = q.answer;
+
+        q.options.forEach((_, i) => {
+            let optEl = document.getElementById(`opt-${qIndex}-${i}`);
+            let radio = optEl.querySelector("input");
+            radio.disabled = true;
+            optEl.classList.add("disabled");
+
+            if (i === correctIndex) {
+                optEl.classList.add("correct-ans");
+            } else if (i === optIndex && optIndex !== correctIndex) {
+                optEl.classList.add("wrong-ans");
+            }
+        });
+
+        let expBox = document.getElementById(`exp-${qIndex}`);
+        if (expBox) {
+            expBox.style.display = "block";
+        }
+
+        updateLiveScore();
     }
 
-    // रिजल्ट और रंगों को अप्लाई करना
-    function applyResults() {
+    // प्रश्न को सेव या अनसेव करने का फंक्शन
+    function toggleSaveQuestion(index) {
+        let btn = document.getElementById(`save-btn-${index}`);
+        if (savedQuestions[index]) {
+            delete savedQuestions[index];
+            btn.classList.remove('saved');
+            btn.innerText = '💾 प्रश्न सेव करें';
+        } else {
+            savedQuestions[index] = true;
+            btn.classList.add('saved');
+            btn.innerText = '⭐ सहेजा गया (Saved)';
+        }
+        localStorage.setItem('quiz_saved_questions_set1', JSON.stringify(savedQuestions));
+    }
+
+    function updateLiveScore() {
+        let attempted = 0;
         let score = 0;
 
-        questions.forEach((q, index) => {
-            let selected = userAnswers[index];
-
-            let correctOptEl = document.getElementById(`opt-${index}-${q.answer}`);
-            if (correctOptEl) {
-                correctOptEl.classList.add("correct-ans");
-            }
-
-            if (selected !== undefined && selected !== q.answer) {
-                let wrongOptEl = document.getElementById(`opt-${index}-${selected}`);
-                if (wrongOptEl) {
-                    wrongOptEl.classList.add("wrong-ans");
-                }
-            }
-
-            if (selected === q.answer) {
+        Object.keys(userAnswers).forEach(index => {
+            attempted++;
+            if (userAnswers[index] === questions[index].answer) {
                 score++;
             }
         });
 
-        let resultBox = document.getElementById("resultBox");
-        let resultText = document.getElementById("resultText");
-        resultText.innerText = `आपने 50 में से ${score} प्रश्नों के सही उत्तर दिए हैं!`;
-        resultBox.style.display = "block";
-
-        document.getElementById("submitContainer").style.display = "none";
+        document.getElementById("liveScoreBar").innerText = `हल किए गए प्रश्न: ${attempted} / ${questions.length} | सही स्कोर: ${score}`;
     }
 
-    // सबमिट बटन पर क्लिक
-    function submitQuiz() {
-        let attempted = Object.keys(userAnswers).length;
-        if (attempted === 0) {
-            alert("कृपया कम से कम एक प्रश्न का उत्तर दें!");
-            return;
-        }
-
-        isSubmitted = true;
-        localStorage.setItem('quiz_submitted_set1', 'true');
-
-        // रेडियो बटन्स को डिसएबल करें
-        let allRadios = document.querySelectorAll('input[type="radio"]');
-        allRadios.forEach(r => r.disabled = true);
-
-        // स्पष्टीकरण दिखाएं
-        questions.forEach((q, index) => {
-            let expBox = document.getElementById(`exp-${index}`);
-            if (expBox) expBox.style.display = "block";
-        });
-
-        applyResults();
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    // क्विज़ रीसेट करने का बटन
     function resetQuiz() {
-        if (confirm("क्या आप वाकई इस क्विज़ को रीसेट करना चाहते हैं? आपके सभी उत्तर मिट जाएंगे।")) {
-            localStorage.removeItem('quiz_answers_set1');
-            localStorage.removeItem('quiz_submitted_set1');
+        if (confirm("क्या आप वाकई क्विज़ रीसेट करना चाहते हैं? आपके सारे उत्तर और सेव किए गए प्रश्न हट जाएंगे।")) {
+            localStorage.removeItem('quiz_instant_answers_set1');
+            localStorage.removeItem('quiz_saved_questions_set1');
             location.reload();
         }
     }
